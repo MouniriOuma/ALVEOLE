@@ -18,7 +18,7 @@ import com.alveole.repository.UserRepository;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	private static final Logger logger = LoggerFactory.getLogger(BillController.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
     @Autowired
@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         try {
-            List<User> users = userRepository.findAll();
+            List<User> users = (List<User>) userRepository.findAll();
 			logger.info("Users successfully retrieved {}", users.get(0));
 
             return new ResponseEntity<>(users, HttpStatus.OK);
