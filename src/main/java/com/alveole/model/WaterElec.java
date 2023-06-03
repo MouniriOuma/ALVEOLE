@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 public class WaterElec {
 	
 	@Id
-	@Column(name = "bill_num")
+	@Column(name = "bill_Num")
     private int bill_Num;
 
 	@Column(name = "water_elec")

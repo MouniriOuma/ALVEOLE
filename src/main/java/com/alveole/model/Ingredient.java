@@ -9,29 +9,29 @@ public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ingredient_id")
+    @Column(name = "ingredientId")
     private int ingredientId;
 
     @Column(name = "name", length = 50)
     private String name;
 
-    @Column(name = "stock_quantity")
+    @Column(name = "stockQuantity")
     private float stockQuantity;
 
-    @Column(name = "unit_price")
+    @Column(name = "unitPrice")
     private float unitPrice;
 
     @Column(name = "description", length = 255)
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(name = "supplierId")
     private Supplier supplier;
 
-    @Column(name = "unit_of_measurement", length = 50)
+    @Column(name = "unitOfMeasurement", length = 50)
     private String unitOfMeasurement;
 
-    @Column(name = "max_quantity")
+    @Column(name = "maxQuantity")
     private float maxQuantity;
 
     
@@ -43,10 +43,8 @@ public class Ingredient {
     };
     
     //constructor
-    
-	public Ingredient(int ingredientId, String name, float stockQuantity, float unitPrice, String description,
-			Supplier supplier, String unitOfMeasurement, float maxQuantity) {
-		super();
+
+	public Ingredient(int ingredientId, String name, float stockQuantity, float unitPrice, String description, Supplier supplier, String unitOfMeasurement, float maxQuantity) {
 		this.ingredientId = ingredientId;
 		this.name = name;
 		this.stockQuantity = stockQuantity;
@@ -57,9 +55,10 @@ public class Ingredient {
 		this.maxQuantity = maxQuantity;
 	}
 
-	
+
 	//getters and setters
-	
+
+
 	public int getIngredientId() {
 		return ingredientId;
 	}
@@ -123,10 +122,5 @@ public class Ingredient {
 	public void setMaxQuantity(float maxQuantity) {
 		this.maxQuantity = maxQuantity;
 	}
-
-	
-
-    
-
 }
 
