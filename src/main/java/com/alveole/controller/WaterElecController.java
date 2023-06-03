@@ -69,10 +69,10 @@ public class WaterElecController {
 			WaterElec waterElec = waterElecRepository.findById(billNum)
 					.orElseThrow(() -> new ResourceNotFoundException("Bill not found with bill number: " + billNum));
 
-			waterElec.setBillNum(billDetails.getBillNum());
-			waterElec.setStatus(billDetails.getStatus());
-			waterElec.setUpdateDate(billDetails.getUpdateDate());
-			waterElec.setCoast(billDetails.getCost());
+			waterElec.setBill_Num(billDetails.getBill_Num());
+			waterElec.setWater_elec(billDetails.getWater_elec());
+			waterElec.setDate(billDetails.getDate());
+			waterElec.setCost(billDetails.getCost());
 
 			WaterElec updatedWaterElec = waterElecRepository.save(waterElec);
 			return ResponseEntity.ok(updatedWaterElec);

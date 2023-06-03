@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.alveole.exception.ResourceNotFoundException;
@@ -17,7 +18,7 @@ import com.alveole.repository.BillRepository;
 
 @RestController
 @RequestMapping("/bills")
-
+@Secured("ROLE_ADMIN")
 public class BillController {
 	private static final Logger logger = LoggerFactory.getLogger(BillController.class);
 
