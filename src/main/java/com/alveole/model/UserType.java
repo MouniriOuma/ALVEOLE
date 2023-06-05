@@ -1,6 +1,8 @@
 package com.alveole.model;
 
 public enum UserType {
-	 admin,
-     user
+    admin,
+    user,
+    ROLE_USER,
+    ROLE_ADMIN
 }

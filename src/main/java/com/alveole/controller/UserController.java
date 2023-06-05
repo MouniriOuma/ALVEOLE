@@ -51,7 +51,7 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable int userId) {
         try {
-            User user = userRepository.findById(userId)
+            User user = userRepository.findById((long) userId)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
             return ResponseEntity.ok(user);
         } catch (ResourceNotFoundException e) {
@@ -64,7 +64,7 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestBody User userDetails) {
         try {
-            User user = userRepository.findById(userId)
+            User user = userRepository.findById((long) userId)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
             user.setUsername(userDetails.getUsername());
@@ -83,12 +83,12 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable int userId) {
         try {
-            boolean exists = userRepository.existsById(userId);
+            boolean exists = userRepository.existsById((long) userId);
             if (!exists) {
                 return ResponseEntity.notFound().build();
             }
 
-            userRepository.deleteById(userId);
+            userRepository.deleteById((long) userId);
 
             Map<String, Boolean> response = new HashMap<>();
             response.put("deleted", Boolean.TRUE);

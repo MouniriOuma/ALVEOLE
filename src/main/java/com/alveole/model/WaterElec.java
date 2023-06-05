@@ -10,74 +10,59 @@ import jakarta.persistence.*;
 public class WaterElec {
 	
 	@Id
-	@Column(name = "bill_num")
-    private int billNum;
+	@Column(name = "bill_Num")
+    private int bill_Num;
 
 	@Column(name = "water_elec")
     @Enumerated(EnumType.STRING)
-    private WaterOrElec status;
+    private WaterOrElec water_elec;
 	
 	@Column(name = "date")
     @Temporal(TemporalType.DATE)
-    private Date updateDate;
+    private Date date;
 
     @Column(name = "cost")
     private float cost;
 
-    
-    public WaterElec() {
-        
-    }
-    
-    
-	public WaterElec(int billNum, WaterOrElec status, Date updateDate, float cost) {
-		super();
-		this.billNum = billNum;
-		this.status = status;
-		this.updateDate = updateDate;
+	public WaterElec(){
+
+	}
+	public WaterElec(int bill_Num, WaterOrElec water_elec, Date date, float cost) {
+		this.bill_Num = bill_Num;
+		this.water_elec = water_elec;
+		this.date = date;
 		this.cost = cost;
 	}
 
-
-	public int getBillNum() {
-		return billNum;
+	public int getBill_Num() {
+		return bill_Num;
 	}
 
-
-	public void setBillNum(int billNum) {
-		this.billNum = billNum;
+	public void setBill_Num(int bill_Num) {
+		this.bill_Num = bill_Num;
 	}
 
-
-	public WaterOrElec getStatus() {
-		return status;
+	public WaterOrElec getWater_elec() {
+		return water_elec;
 	}
 
-
-	public void setStatus(WaterOrElec status) {
-		this.status = status;
+	public void setWater_elec(WaterOrElec water_elec) {
+		this.water_elec = water_elec;
 	}
 
-
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getDate() {
+		return date;
 	}
 
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
-
 
 	public float getCost() {
 		return cost;
 	}
 
-
-	public void setCoast(float cost) {
+	public void setCost(float cost) {
 		this.cost = cost;
 	}
-    
-    
-    
 }
