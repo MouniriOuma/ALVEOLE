@@ -1,8 +1,10 @@
 package com.alveole.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,7 @@ public class ProductionCostController {
         }
     }
 
+    {/*
     @PostMapping
     public ResponseEntity<ProductionCost> createProductionCost(@RequestBody ProductionCost productionCost) {
         try {
@@ -37,7 +40,33 @@ public class ProductionCostController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    } */}
+
+    @PostMapping
+    public ResponseEntity<ProductionCost> createProductionCost(@RequestBody ProductionCost productionCost) {
+        try {
+            // Get today's date
+            LocalDate currentDate = LocalDate.now();
+
+            // Check if a row exists with today's date
+            Optional<ProductionCost> existingProductionCost = productionCostRepository.findByDate(currentDate);
+
+            if (existingProductionCost.isPresent()) {
+                // Row with today's date already exists, update the cost
+                ProductionCost existingCost = existingProductionCost.get();
+                existingCost.setCost(productionCost.getCost());
+                ProductionCost updatedProductionCost = productionCostRepository.save(existingCost);
+                return new ResponseEntity<>(updatedProductionCost, HttpStatus.OK);
+            } else {
+                // Row with today's date does not exist, create a new row
+                ProductionCost createdProductionCost = productionCostRepository.save(productionCost);
+                return new ResponseEntity<>(createdProductionCost, HttpStatus.CREATED);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductionCost> getProductionCostById(@PathVariable int id) {
@@ -53,8 +82,9 @@ public class ProductionCostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductionCost> updateProductionCost(@PathVariable int id,
-                                                               @RequestBody ProductionCost productionCostDetails) {
+    public ResponseEntity<ProductionCost> updateProductionCost(
+            @PathVariable int id,
+            @RequestBody ProductionCost productionCostDetails) {
         try {
             ProductionCost productionCost = productionCostRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Production Cost not found with ID: " + id));

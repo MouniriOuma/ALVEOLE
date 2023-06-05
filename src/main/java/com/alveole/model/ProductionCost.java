@@ -1,6 +1,10 @@
 package com.alveole.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -13,7 +17,8 @@ public class ProductionCost {
     private int id;
 
     @Column(name = "date")
-    private Date date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     @Column(name = "cost")
     private float cost;
@@ -21,7 +26,7 @@ public class ProductionCost {
     public ProductionCost() {
     }
 
-    public ProductionCost(int id, Date date, float cost) {
+    public ProductionCost(int id, LocalDate date, float cost) {
         this.id = id;
         this.date = date;
         this.cost = cost;
@@ -35,11 +40,11 @@ public class ProductionCost {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
