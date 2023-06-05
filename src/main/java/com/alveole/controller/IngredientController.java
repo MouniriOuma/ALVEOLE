@@ -1,6 +1,7 @@
 package com.alveole.controller;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.List;
 import java.util.Map;
 
@@ -99,4 +100,29 @@ public class IngredientController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    //update stock
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/{ingredientId}/stock/{quantity}")
+    public ResponseEntity<String> updateIngredientStock(
+            @PathVariable("ingredientId") int ingredientId,
+            @PathVariable("quantity")  float quantity) {
+
+        try {
+            Optional<Ingredient> optionalIngredient = ingredientRepository.findById(ingredientId);
+
+            if (optionalIngredient.isPresent()) {
+                Ingredient ingredient = optionalIngredient.get();
+                ingredient.setStockQuantity(quantity);
+                ingredientRepository.save(ingredient);
+                return ResponseEntity.ok("Ingredient stock updated successfully");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update ingredient stock");
+        }
+    }
 }
+
