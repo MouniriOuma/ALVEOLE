@@ -11,7 +11,7 @@ public class Client {
     @Column(name = "ice")
     private int ice;
 
-    @Column(name = "raison_social", nullable = false, length = 50)
+    @Column(name = "raison_social", length = 50)
     private String raisonSocial;
 
     @Column(name = "adresse", length = 100)
