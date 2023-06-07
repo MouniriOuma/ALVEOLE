@@ -35,10 +35,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @Column(name = "user_type", nullable = false, length = 10)
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-
 
     // Default constructor
 
@@ -46,67 +42,50 @@ public class User {
 
     }
 
-    // Constructors 
+    // Constructors
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public User(int id, String username, String password, UserType userType) {
-        super();
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.userType = userType;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public UserType getUserType() {
-        return userType;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
 }
-
