@@ -10,6 +10,7 @@ import com.alveole.payload.response.JwtResponse;
 import com.alveole.payload.response.MessageResponse;
 import com.alveole.repository.RoleRepository;
 import com.alveole.repository.UserRepository;
+import com.alveole.service.EmailService;
 import com.alveole.service.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -116,7 +120,67 @@ public class AuthController {
 
         user.setRoles(roles);
         userRepository.save(user);
+        System.out.println("password: " + signUpRequest.getPassword());
+
+        //email function
+        String body = "Hello dear,\n\n" +
+                "We are pleased to inform you that your account credentials for alveole company have been successfully created. " +
+                "Please find your login details below:\n\n" +
+                "Username: " + signUpRequest.getUsername() + "\n" +
+                "Password: " + signUpRequest.getPassword() + "\n\n" +
+                "Best regards,\n\n\n" +
+                "alveole\n" ;
+
+        emailService.sendEmail(signUpRequest.getEmail(), "Alveole account", body);
+
+
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @Valid @RequestBody SignupRequest signUpRequest) {
+        if (!userRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Update the user's properties
+        user.setUsername(signUpRequest.getUsername());
+        user.setEmail(signUpRequest.getEmail());
+        user.setPassword(encoder.encode(signUpRequest.getPassword()));
+
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+
+        if (strRoles == null || strRoles.equals("user")) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
+
+        user.setRoles(roles);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
+    }
+
 }
