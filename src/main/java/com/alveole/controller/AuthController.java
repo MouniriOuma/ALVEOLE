@@ -192,7 +192,7 @@ public class AuthController {
                 "alveole\n" ;
         System.out.println("Sending mail  user");
 
-        emailService.sendEmail(signUpRequest.getEmail(), "Alveole account", body);
+        emailService.sendEmail(signUpRequest.getEmail(), "New alveole account password", body);
         System.out.println("eMail sent to  user");
 
         return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
