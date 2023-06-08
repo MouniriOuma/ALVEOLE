@@ -178,7 +178,22 @@ public class AuthController {
         }
 
         user.setRoles(roles);
+        System.out.println("Update user");
         userRepository.save(user);
+        System.out.println("User Updated");
+
+        //email function
+        String body = "Hello dear,\n\n" +
+                "We are pleased to inform you that your account credentials for alveole company have been changed. " +
+                "Please find your new login details below:\n\n" +
+                "Username: " + signUpRequest.getUsername() + "\n" +
+                "Password: " + signUpRequest.getPassword() + "\n\n" +
+                "Best regards,\n\n\n" +
+                "alveole\n" ;
+        System.out.println("Sending mail  user");
+
+        emailService.sendEmail(signUpRequest.getEmail(), "Alveole account", body);
+        System.out.println("eMail sent to  user");
 
         return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
     }
