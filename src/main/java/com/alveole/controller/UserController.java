@@ -42,24 +42,6 @@ public class UserController {
     }
 
 
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser( @RequestBody User user, @PathVariable int id) {
-        Optional<User> userOptional = userRepository.findById((long) id);
-        if (userOptional.isPresent()) {
-            User existingUser = userOptional.get();
-            existingUser.setUsername(user.getUsername());
-            existingUser.setEmail(user.getEmail());
-            existingUser.setPassword(user.getPassword());
-            existingUser.setRoles(user.getRoles());
-
-            User updatedUser = userRepository.save(existingUser);
-            return ResponseEntity.ok(updatedUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         Optional<User> userOptional = userRepository.findById((long) id);
