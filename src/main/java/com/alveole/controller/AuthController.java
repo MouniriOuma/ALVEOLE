@@ -14,7 +14,9 @@ import com.alveole.service.EmailService;
 import com.alveole.service.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -196,6 +198,23 @@ public class AuthController {
         System.out.println("eMail sent to  user");
 
         return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
+    }
+
+//    @PostMapping("/signout")
+//    public ResponseEntity<?> logoutUser() {
+//        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+//        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+//                .body(new MessageResponse("You've been signed out!"));
+//    }
+
+    @PostMapping("/signout")
+    public ResponseEntity<?> logout() {
+        // Invalidate the JWT token
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("you have been logged out ");
+        authentication.setAuthenticated(false);
+
+        return ResponseEntity.ok().build();
     }
 
 }
