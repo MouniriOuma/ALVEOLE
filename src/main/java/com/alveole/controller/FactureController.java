@@ -115,6 +115,7 @@ public class FactureController {
         }
     }
 
+    //export facture to pdf
     @GetMapping("/export/pdf/{id}")
     public void exportToPDF(@PathVariable int id, HttpServletResponse response) throws DocumentException, IOException {
         response.setContentType("application/pdf");
