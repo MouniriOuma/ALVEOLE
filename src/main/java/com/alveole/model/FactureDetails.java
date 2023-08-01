@@ -1,5 +1,6 @@
 package com.alveole.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,6 +17,7 @@ public class FactureDetails {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facture_id")
+    @JsonBackReference
     private Facture facture;
 
     @Column(name = "produit", nullable = false)

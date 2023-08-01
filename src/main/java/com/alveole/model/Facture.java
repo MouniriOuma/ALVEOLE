@@ -1,10 +1,13 @@
 package com.alveole.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -38,12 +41,16 @@ public class Facture {
     @Column(name = "total_TTC", nullable = false)
     private BigDecimal totalTTC;
 
+    @OneToMany(mappedBy = "facture", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<FactureDetails> factureDetails;
+
 
     // Constructors
     public Facture() {
     }
 
-    public Facture(int id, String numeroFacture, String numeroCommande, LocalDate dateFacture, String client, BigDecimal totalHT, BigDecimal totalTVA, BigDecimal totalTTC) {
+    public Facture(int id, String numeroFacture, String numeroCommande, LocalDate dateFacture, String client, BigDecimal totalHT, BigDecimal totalTVA, BigDecimal totalTTC, List<FactureDetails> factureDetails) {
         this.id = id;
         this.numeroFacture = numeroFacture;
         this.numeroCommande = numeroCommande;
@@ -52,6 +59,7 @@ public class Facture {
         this.totalHT = totalHT;
         this.totalTVA = totalTVA;
         this.totalTTC = totalTTC;
+        this.factureDetails = factureDetails;
     }
 
     // Getters and setters
@@ -118,6 +126,14 @@ public class Facture {
 
     public void setTotalTTC(BigDecimal totalTTC) {
         this.totalTTC = totalTTC;
+    }
+
+    public List<FactureDetails> getFactureDetails() {
+        return factureDetails;
+    }
+
+    public void setFactureDetails(List<FactureDetails> factureDetails) {
+        this.factureDetails = factureDetails;
     }
 }
 

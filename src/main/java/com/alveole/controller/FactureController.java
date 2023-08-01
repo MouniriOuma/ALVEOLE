@@ -1,12 +1,16 @@
 package com.alveole.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.alveole.PDFExporter.FacturePDFExporter;
 import com.alveole.exception.ResourceNotFoundException;
 import com.alveole.model.Facture;
 import com.alveole.repository.FactureRepository;
+import com.lowagie.text.DocumentException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,7 @@ import org.springframework.http.HttpStatus;
 @RestController
 @RequestMapping("/factures")
 public class FactureController {
+
 
     @Autowired
     private FactureRepository factureRepository;
@@ -43,6 +48,21 @@ public class FactureController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/WithDetails/{factureId}")
+    public ResponseEntity<Facture> getFactureWithDetails(@PathVariable int factureId) {
+        try {
+            Facture facture = factureRepository.findByIdWithDetails(factureId);
+            if (facture != null) {
+                return new ResponseEntity<>(facture, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<Facture> createFacture(@RequestBody Facture facture) {
@@ -94,4 +114,30 @@ public class FactureController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/export/pdf/{id}")
+    public void exportToPDF(@PathVariable int id, HttpServletResponse response) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=facture_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        Optional<Facture> factureOptional = factureRepository.findById(id);
+
+        // Check if the facture with the given ID exists
+        if (factureOptional.isPresent()) {
+            Facture facture = factureOptional.get();
+            FacturePDFExporter exporter = new FacturePDFExporter(facture);
+            exporter.export(response);
+        } else {
+            // Facture with the given ID is not found
+            // Send an error response with HTTP status code 404 (Not Found)
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Facture with ID " + id + " not found.");
+        }
+    }
+
+
 }
