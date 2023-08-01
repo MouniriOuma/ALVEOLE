@@ -86,9 +86,7 @@ public class FacturePDFExporter {
         document.add(title);
 
         //Subtitle date
-        DateFormat subDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-        String currentSubDateTime = subDateFormatter.format(new Date());
-        Paragraph SubTitleDate = new Paragraph(currentSubDateTime, font);
+        Paragraph SubTitleDate = new Paragraph(String.valueOf(facture.getDateFacture()), font);
         SubTitleDate.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(SubTitleDate);
 
