@@ -1,5 +1,6 @@
 package com.alveole.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -13,7 +14,8 @@ public class BonDeCommandeDetails {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bon_de_commande_id", nullable = false)
+    @JoinColumn(name = "bon_de_commande_id")
+    @JsonBackReference
     private BonDeCommande bonDeCommande;
 
     @Column(name = "produit", nullable = false)
@@ -25,21 +27,18 @@ public class BonDeCommandeDetails {
     @Column(name = "prix_unitaire", nullable = false)
     private BigDecimal prixUnitaire;
 
-    @Column(name = "total_HT", nullable = false)
-    private BigDecimal totalHT;
 
     // Constructors, getters, and setters
 
     public BonDeCommandeDetails() {
     }
 
-    public BonDeCommandeDetails(int id, BonDeCommande bonDeCommande, String produit, int quantite, BigDecimal prixUnitaire, BigDecimal totalHT) {
+    public BonDeCommandeDetails(int id, BonDeCommande bonDeCommande, String produit, int quantite, BigDecimal prixUnitaire) {
         this.id = id;
         this.bonDeCommande = bonDeCommande;
         this.produit = produit;
         this.quantite = quantite;
         this.prixUnitaire = prixUnitaire;
-        this.totalHT = totalHT;
     }
 
     public int getId() {
@@ -48,14 +47,6 @@ public class BonDeCommandeDetails {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public BonDeCommande getBonDeCommande() {
-        return bonDeCommande;
-    }
-
-    public void setBonDeCommande(BonDeCommande bonDeCommande) {
-        this.bonDeCommande = bonDeCommande;
     }
 
     public String getProduit() {
@@ -82,11 +73,11 @@ public class BonDeCommandeDetails {
         this.prixUnitaire = prixUnitaire;
     }
 
-    public BigDecimal getTotalHT() {
-        return totalHT;
+    public BonDeCommande getBonDeCommande() {
+        return bonDeCommande;
     }
 
-    public void setTotalHT(BigDecimal totalHT) {
-        this.totalHT = totalHT;
+    public void setBonDeCommande(BonDeCommande bonDeCommande) {
+        this.bonDeCommande = bonDeCommande;
     }
 }

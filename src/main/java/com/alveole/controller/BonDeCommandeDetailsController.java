@@ -67,7 +67,6 @@ public class BonDeCommandeDetailsController {
             existingBonDeCommandeDetail.setProduit(bonDeCommandeDetails.getProduit());
             existingBonDeCommandeDetail.setQuantite(bonDeCommandeDetails.getQuantite());
             existingBonDeCommandeDetail.setPrixUnitaire(bonDeCommandeDetails.getPrixUnitaire());
-            existingBonDeCommandeDetail.setTotalHT(bonDeCommandeDetails.getTotalHT());
 
             BonDeCommandeDetails updatedBonDeCommandeDetail = bonDeCommandeDetailsRepository.save(existingBonDeCommandeDetail);
             return ResponseEntity.ok(updatedBonDeCommandeDetail);
@@ -97,4 +96,3 @@ public class BonDeCommandeDetailsController {
         }
     }
 }
-
