@@ -67,7 +67,8 @@ public class BonDeCommandeController {
 
             bonDeCommande.setNumeroCommande(bonDeCommandeDetails.getNumeroCommande());
             bonDeCommande.setDateCommande(bonDeCommandeDetails.getDateCommande());
-            bonDeCommande.setFournisseur(bonDeCommandeDetails.getFournisseur());
+            bonDeCommande.setClient(bonDeCommandeDetails.getClient());
+            bonDeCommande.setTotalHT(bonDeCommandeDetails.getTotalHT());
 
             BonDeCommande updatedBonDeCommande = bonDeCommandeRepository.save(bonDeCommande);
             return ResponseEntity.ok(updatedBonDeCommande);
@@ -97,4 +98,3 @@ public class BonDeCommandeController {
         }
     }
 }
-
