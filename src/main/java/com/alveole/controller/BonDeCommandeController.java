@@ -1,12 +1,16 @@
 package com.alveole.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.alveole.PDFExporter.BonDeCommandePDFExporter;
 import com.alveole.exception.ResourceNotFoundException;
 import com.alveole.model.BonDeCommande;
 import com.alveole.repository.BonDeCommandeRepository;
+import com.lowagie.text.DocumentException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -97,4 +101,31 @@ public class BonDeCommandeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    //export bon de commande to pdf
+    @GetMapping("/export/pdf/{id}")
+    public void exportBonDeCommandeToPDF(@PathVariable int id, HttpServletResponse response) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=bondecommande_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        Optional<BonDeCommande> bonDeCommandeOptional = bonDeCommandeRepository.findById(id);
+
+        // Check if the bon de commande with the given ID exists
+        if (bonDeCommandeOptional.isPresent()) {
+            BonDeCommande bonDeCommande = bonDeCommandeOptional.get();
+            BonDeCommandePDFExporter exporter = new BonDeCommandePDFExporter(bonDeCommande);
+            exporter.export(response);
+        } else {
+            // Bon de commande with the given ID is not found
+            // Send an error response with HTTP status code 404 (Not Found)
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Bon de commande with ID " + id + " not found.");
+        }
+    }
+
+
 }
