@@ -1,12 +1,16 @@
 package com.alveole.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.alveole.PDFExporter.BonDeLivraisonPDFExporter;
 import com.alveole.exception.ResourceNotFoundException;
 import com.alveole.model.BonDeLivraison;
 import com.alveole.repository.BonDeLivraisonRepository;
+import com.lowagie.text.DocumentException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +73,7 @@ public class BonDeLivraisonController {
             bonDeLivraison.setNumeroCommande(bonDeLivraisonDetails.getNumeroCommande());
             bonDeLivraison.setDateLivraison(bonDeLivraisonDetails.getDateLivraison());
             bonDeLivraison.setClient(bonDeLivraisonDetails.getClient());
+            bonDeLivraison.setTotalHT(bonDeLivraisonDetails.getTotalHT());
 
             BonDeLivraison updatedBonDeLivraison = bonDeLivraisonRepository.save(bonDeLivraison);
             return ResponseEntity.ok(updatedBonDeLivraison);
@@ -97,6 +102,32 @@ public class BonDeLivraisonController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    // Export bon de livraison to PDF
+    @GetMapping("/export/pdf/{id}")
+    public void exportToPDF(@PathVariable int id, HttpServletResponse response) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=bon_de_livraison_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        Optional<BonDeLivraison> bonDeLivraisonOptional = bonDeLivraisonRepository.findById(id);
+
+        // Check if the bon de livraison with the given ID exists
+        if (bonDeLivraisonOptional.isPresent()) {
+            BonDeLivraison bonDeLivraison = bonDeLivraisonOptional.get();
+            BonDeLivraisonPDFExporter exporter = new BonDeLivraisonPDFExporter(bonDeLivraison);
+            exporter.export(response);
+        } else {
+            // Bon de livraison with the given ID is not found
+            // Send an error response with HTTP status code 404 (Not Found)
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Bon de Livraison with ID " + id + " not found.");
+        }
+    }
+
 
 }
 

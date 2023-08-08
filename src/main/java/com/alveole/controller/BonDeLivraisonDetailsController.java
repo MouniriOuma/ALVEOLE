@@ -66,7 +66,6 @@ public class BonDeLivraisonDetailsController {
             existingBonDeLivraisonDetails.setProduit(bonDeLivraisonDetails.getProduit());
             existingBonDeLivraisonDetails.setQuantiteCommande(bonDeLivraisonDetails.getQuantiteCommande());
             existingBonDeLivraisonDetails.setPrixUnitaire(bonDeLivraisonDetails.getPrixUnitaire());
-            existingBonDeLivraisonDetails.setTotalHT(bonDeLivraisonDetails.getTotalHT());
 
             BonDeLivraisonDetails updatedBonDeLivraisonDetails = bonDeLivraisonDetailsRepository.save(existingBonDeLivraisonDetails);
             return ResponseEntity.ok(updatedBonDeLivraisonDetails);
