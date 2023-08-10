@@ -64,7 +64,7 @@ public class BonDeLivraisonController {
 
     // Update a bon de livraison
     @PutMapping("/update/{id}")
-    public ResponseEntity<BonDeLivraison> updateBonDeLivraison(@PathVariable Integer id, @RequestBody BonDeLivraison bonDeLivraisonDetails) {
+    public ResponseEntity<?> updateBonDeLivraison(@PathVariable Integer id, @RequestBody BonDeLivraison bonDeLivraisonDetails) {
         try {
             BonDeLivraison bonDeLivraison = bonDeLivraisonRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Bon de livraison not found with ID: " + id));
@@ -75,12 +75,18 @@ public class BonDeLivraisonController {
             bonDeLivraison.setClient(bonDeLivraisonDetails.getClient());
             bonDeLivraison.setTotalHT(bonDeLivraisonDetails.getTotalHT());
 
+            // Update BonDeLivraisonDetails if needed
+            if (bonDeLivraisonDetails.getBonDeLivraisonDetails() != null) {
+                bonDeLivraison.getBonDeLivraisonDetails().clear();
+                bonDeLivraison.getBonDeLivraisonDetails().addAll(bonDeLivraisonDetails.getBonDeLivraisonDetails());
+            }
+
             BonDeLivraison updatedBonDeLivraison = bonDeLivraisonRepository.save(bonDeLivraison);
             return ResponseEntity.ok(updatedBonDeLivraison);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

@@ -75,26 +75,32 @@ public class FactureController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Facture> updateFacture(@PathVariable int id, @RequestBody Facture factureDetails) {
+    public ResponseEntity<?> updateFacture(@PathVariable int id, @RequestBody Facture updatedFacture) {
         try {
             Facture facture = factureRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Facture not found with ID: " + id));
 
-            facture.setNumeroFacture(factureDetails.getNumeroFacture());
-            facture.setNumeroCommande(factureDetails.getNumeroCommande());
-            facture.setNumeroLivraison(factureDetails.getNumeroLivraison());
-            facture.setDateFacture(factureDetails.getDateFacture());
-            facture.setClient(factureDetails.getClient());
-            facture.setTotalHT(factureDetails.getTotalHT());
-            facture.setTotalTVA(factureDetails.getTotalTVA());
-            facture.setTotalTTC(factureDetails.getTotalTTC());
+            facture.setNumeroFacture(updatedFacture.getNumeroFacture());
+            facture.setNumeroCommande(updatedFacture.getNumeroCommande());
+            facture.setNumeroLivraison(updatedFacture.getNumeroLivraison());
+            facture.setDateFacture(updatedFacture.getDateFacture());
+            facture.setClient(updatedFacture.getClient());
+            facture.setTotalHT(updatedFacture.getTotalHT());
+            facture.setTotalTVA(updatedFacture.getTotalTVA());
+            facture.setTotalTTC(updatedFacture.getTotalTTC());
 
-            Facture updatedFacture = factureRepository.save(facture);
-            return ResponseEntity.ok(updatedFacture);
+            // Update FactureDetails if needed
+            if (updatedFacture.getFactureDetails() != null) {
+                facture.getFactureDetails().clear();
+                facture.getFactureDetails().addAll(updatedFacture.getFactureDetails());
+            }
+
+            Facture updatedFactureEntity = factureRepository.save(facture);
+            return ResponseEntity.ok(updatedFactureEntity);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

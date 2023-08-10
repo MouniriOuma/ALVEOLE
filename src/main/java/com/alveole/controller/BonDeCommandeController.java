@@ -64,22 +64,26 @@ public class BonDeCommandeController {
 
     // Update a bon de commande
     @PutMapping("/{id}")
-    public ResponseEntity<BonDeCommande> updateBonDeCommande(@PathVariable int id, @RequestBody BonDeCommande bonDeCommandeDetails) {
-        try {
-            BonDeCommande bonDeCommande = bonDeCommandeRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Bon de commande not found with ID: " + id));
+    public ResponseEntity<?> updateBonDeCommande(@PathVariable int id, @RequestBody BonDeCommande updatedBonDeCommande) {
+        Optional<BonDeCommande> optionalBonDeCommande = bonDeCommandeRepository.findById(id);
 
-            bonDeCommande.setNumeroCommande(bonDeCommandeDetails.getNumeroCommande());
-            bonDeCommande.setDateCommande(bonDeCommandeDetails.getDateCommande());
-            bonDeCommande.setClient(bonDeCommandeDetails.getClient());
-            bonDeCommande.setTotalHT(bonDeCommandeDetails.getTotalHT());
+        if (optionalBonDeCommande.isPresent()) {
+            BonDeCommande existingBonDeCommande = optionalBonDeCommande.get();
+            existingBonDeCommande.setNumeroCommande(updatedBonDeCommande.getNumeroCommande());
+            existingBonDeCommande.setDateCommande(updatedBonDeCommande.getDateCommande());
+            existingBonDeCommande.setClient(updatedBonDeCommande.getClient());
+            existingBonDeCommande.setTotalHT(updatedBonDeCommande.getTotalHT());
 
-            BonDeCommande updatedBonDeCommande = bonDeCommandeRepository.save(bonDeCommande);
-            return ResponseEntity.ok(updatedBonDeCommande);
-        } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            // Update BonDeCommandeDetails if needed
+            if (updatedBonDeCommande.getBonDeCommandeDetails() != null) {
+                existingBonDeCommande.getBonDeCommandeDetails().clear();
+                existingBonDeCommande.getBonDeCommandeDetails().addAll(updatedBonDeCommande.getBonDeCommandeDetails());
+            }
+
+            bonDeCommandeRepository.save(existingBonDeCommande);
+            return ResponseEntity.ok("Bon de commande updated successfully.");
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
