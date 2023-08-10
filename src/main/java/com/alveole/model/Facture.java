@@ -25,6 +25,9 @@ public class Facture {
     @Column(name = "numero_commande", nullable = false)
     private String numeroCommande;
 
+    @Column(name = "numero_livraison", nullable = false)
+    private String numeroLivraison;
+
     @Column(name = "date_facture", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateFacture;
@@ -50,10 +53,11 @@ public class Facture {
     public Facture() {
     }
 
-    public Facture(int id, String numeroFacture, String numeroCommande, LocalDate dateFacture, String client, BigDecimal totalHT, BigDecimal totalTVA, BigDecimal totalTTC, List<FactureDetails> factureDetails) {
+    public Facture(int id, String numeroFacture, String numeroCommande, String numeroLivraison, LocalDate dateFacture, String client, BigDecimal totalHT, BigDecimal totalTVA, BigDecimal totalTTC, List<FactureDetails> factureDetails) {
         this.id = id;
         this.numeroFacture = numeroFacture;
         this.numeroCommande = numeroCommande;
+        this.numeroLivraison = numeroLivraison;
         this.dateFacture = dateFacture;
         this.client = client;
         this.totalHT = totalHT;
@@ -126,6 +130,14 @@ public class Facture {
 
     public void setTotalTTC(BigDecimal totalTTC) {
         this.totalTTC = totalTTC;
+    }
+
+    public String getNumeroLivraison() {
+        return numeroLivraison;
+    }
+
+    public void setNumeroLivraison(String numeroLivraison) {
+        this.numeroLivraison = numeroLivraison;
     }
 
     public List<FactureDetails> getFactureDetails() {

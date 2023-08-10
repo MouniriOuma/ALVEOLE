@@ -118,6 +118,15 @@ public class FacturePDFExporter {
         subtitlesTable.addCell(subtitle2Cell1);
         subtitlesTable.addCell(subtitle2Cell2);
 
+        // Subtitle 3
+        PdfPCell subtitle3Cell1 = new PdfPCell(new Phrase("Numéro de livraison: "));
+        subtitle3Cell1.setBorder(Rectangle.NO_BORDER);
+
+        PdfPCell subtitle3Cell2 = new PdfPCell(new Phrase(facture.getNumeroLivraison()));
+
+        subtitlesTable.addCell(subtitle3Cell1);
+        subtitlesTable.addCell(subtitle3Cell2);
+
         document.add(subtitlesTable);
 
         document.add(blankLine);

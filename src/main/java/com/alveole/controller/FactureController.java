@@ -82,6 +82,7 @@ public class FactureController {
 
             facture.setNumeroFacture(factureDetails.getNumeroFacture());
             facture.setNumeroCommande(factureDetails.getNumeroCommande());
+            facture.setNumeroLivraison(factureDetails.getNumeroLivraison());
             facture.setDateFacture(factureDetails.getDateFacture());
             facture.setClient(factureDetails.getClient());
             facture.setTotalHT(factureDetails.getTotalHT());
