@@ -36,13 +36,13 @@ public class BonDeLivraisonPDFExporter {
         cell.setPhrase(new Phrase("Produit", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Quantité Commandée", font));
+        cell.setPhrase(new Phrase("Quantité ", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Prix Unitaire", font));
+        cell.setPhrase(new Phrase("Prix Unitaire (HT)", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Total", font));
+        cell.setPhrase(new Phrase("Total (HT)", font));
         table.addCell(cell);
     }
 
@@ -94,7 +94,7 @@ public class BonDeLivraisonPDFExporter {
         subtitlesTable.setWidthPercentage(50);
         subtitlesTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-        PdfPCell subtitle1Cell1 = new PdfPCell(new Phrase("Numéro de livraison: "));
+        PdfPCell subtitle1Cell1 = new PdfPCell(new Phrase("N° bon de livraison: "));
         subtitle1Cell1.setBorder(Rectangle.NO_BORDER);
 
         PdfPCell subtitle1Cell2 = new PdfPCell(new Phrase(bonDeLivraison.getNumeroLivraison()));
@@ -102,7 +102,7 @@ public class BonDeLivraisonPDFExporter {
         subtitlesTable.addCell(subtitle1Cell1);
         subtitlesTable.addCell(subtitle1Cell2);
 
-        PdfPCell subtitle2Cell1 = new PdfPCell(new Phrase("Numéro de commande: "));
+        PdfPCell subtitle2Cell1 = new PdfPCell(new Phrase("N° bon de commande: "));
         subtitle2Cell1.setBorder(Rectangle.NO_BORDER);
 
         PdfPCell subtitle2Cell2 = new PdfPCell(new Phrase(bonDeLivraison.getNumeroCommande()));

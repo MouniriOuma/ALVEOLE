@@ -36,13 +36,13 @@ public class FacturePDFExporter {
         cell.setPhrase(new Phrase("Produit", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Quantité Commandée", font));
+        cell.setPhrase(new Phrase("Quantité ", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Prix Unitaire", font));
+        cell.setPhrase(new Phrase("Prix Unitaire (HT)", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Total", font));
+        cell.setPhrase(new Phrase("Total (HT)", font));
         table.addCell(cell);
     }
 
@@ -101,7 +101,7 @@ public class FacturePDFExporter {
         subtitlesTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
         // Subtitle 1
-        PdfPCell subtitle1Cell1 = new PdfPCell(new Phrase("Numéro de facture: "));
+        PdfPCell subtitle1Cell1 = new PdfPCell(new Phrase("N° facture: "));
         subtitle1Cell1.setBorder(Rectangle.NO_BORDER);
 
         PdfPCell subtitle1Cell2 = new PdfPCell(new Phrase(facture.getNumeroFacture()));
@@ -110,7 +110,7 @@ public class FacturePDFExporter {
         subtitlesTable.addCell(subtitle1Cell2);
 
         // Subtitle 2
-        PdfPCell subtitle2Cell1 = new PdfPCell(new Phrase("Numéro de commande: "));
+        PdfPCell subtitle2Cell1 = new PdfPCell(new Phrase("N° bon de commande: "));
         subtitle2Cell1.setBorder(Rectangle.NO_BORDER);
 
         PdfPCell subtitle2Cell2 = new PdfPCell(new Phrase(facture.getNumeroCommande()));
@@ -119,7 +119,7 @@ public class FacturePDFExporter {
         subtitlesTable.addCell(subtitle2Cell2);
 
         // Subtitle 3
-        PdfPCell subtitle3Cell1 = new PdfPCell(new Phrase("Numéro de livraison: "));
+        PdfPCell subtitle3Cell1 = new PdfPCell(new Phrase("N° bon de livraison: "));
         subtitle3Cell1.setBorder(Rectangle.NO_BORDER);
 
         PdfPCell subtitle3Cell2 = new PdfPCell(new Phrase(facture.getNumeroLivraison()));
