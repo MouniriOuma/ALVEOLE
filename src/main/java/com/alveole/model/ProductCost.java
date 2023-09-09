@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "productionCost")
-public class ProductionCost {
+@Table(name = "productCost")
+public class ProductCost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,13 +21,17 @@ public class ProductionCost {
     @Column(name = "cost")
     private float cost;
 
-    public ProductionCost() {
+    @Column(name = "product_name")
+    private String productName;
+
+    public ProductCost() {
     }
 
-    public ProductionCost(int id, LocalDate date, float cost) {
+    public ProductCost(int id, LocalDate date, float cost, String productName) {
         this.id = id;
         this.date = date;
         this.cost = cost;
+        this.productName = productName;
     }
 
     public int getId() {
@@ -54,5 +56,13 @@ public class ProductionCost {
 
     public void setCost(float cost) {
         this.cost = cost;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }
