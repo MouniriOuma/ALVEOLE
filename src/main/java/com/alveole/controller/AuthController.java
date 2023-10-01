@@ -200,12 +200,12 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
     }
 
-//    @PostMapping("/signout")
-//    public ResponseEntity<?> logoutUser() {
-//        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-//        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-//                .body(new MessageResponse("You've been signed out!"));
-//    }
+    /*@PostMapping("/signout")
+    public ResponseEntity<?> logout() {
+        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new MessageResponse("You've been signed out!"));
+    }*/
 
     @PostMapping("/signout")
     public ResponseEntity<?> logout() {
@@ -214,7 +214,7 @@ public class AuthController {
         System.out.println("you have been logged out ");
         authentication.setAuthenticated(false);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new MessageResponse("you have been logged out"));
     }
 
 }
