@@ -42,7 +42,7 @@ public class FacturePDFExporter {
         cell.setPhrase(new Phrase("Prix Unitaire (HT)", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Total (HT)", font));
+        cell.setPhrase(new Phrase("Totale (HT)", font));
         table.addCell(cell);
     }
 
@@ -189,7 +189,7 @@ public class FacturePDFExporter {
         detailsTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
         // Total HT
-        PdfPCell totalHTCell1 = new PdfPCell(new Phrase("Total HT: "));
+        PdfPCell totalHTCell1 = new PdfPCell(new Phrase("Totale HT: "));
         totalHTCell1.setBorder(Rectangle.NO_BORDER);
 
         PdfPCell totalHTCell2 = new PdfPCell(new Phrase(facture.getTotalHT().toString()));
@@ -199,7 +199,7 @@ public class FacturePDFExporter {
         detailsTable.addCell(totalHTCell2);
 
         // Total TVA
-        PdfPCell totalTVACell1 = new PdfPCell(new Phrase("Total TVA: "));
+        PdfPCell totalTVACell1 = new PdfPCell(new Phrase("Totale TVA: "));
         totalTVACell1.setBorder(Rectangle.NO_BORDER);
 
         PdfPCell totalTVACell2 = new PdfPCell(new Phrase(facture.getTotalTVA().toString()));
@@ -209,7 +209,7 @@ public class FacturePDFExporter {
         detailsTable.addCell(totalTVACell2);
 
         // Total TTC with TOP_BORDER
-        PdfPCell totalTTCCell1 = new PdfPCell(new Phrase("Total TTC: "));
+        PdfPCell totalTTCCell1 = new PdfPCell(new Phrase("Totale TTC: "));
         totalTTCCell1.setBorder(Rectangle.NO_BORDER | Rectangle.TOP);
 
         PdfPCell totalTTCCell2 = new PdfPCell(new Phrase(facture.getTotalTTC().toString()));

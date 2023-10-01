@@ -42,7 +42,7 @@ public class BonDeLivraisonPDFExporter {
         cell.setPhrase(new Phrase("Prix Unitaire (HT)", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Total (HT)", font));
+        cell.setPhrase(new Phrase("Totale (HT)", font));
         table.addCell(cell);
     }
 
@@ -161,7 +161,7 @@ public class BonDeLivraisonPDFExporter {
         detailsTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
 
-        PdfPCell totalTTCCell1 = new PdfPCell(new Phrase("Total HT: "));
+        PdfPCell totalTTCCell1 = new PdfPCell(new Phrase("Totale HT: "));
         totalTTCCell1.setBorder(Rectangle.NO_BORDER | Rectangle.TOP);
 
         PdfPCell totalTTCCell2 = new PdfPCell(new Phrase(bonDeLivraison.getTotalHT().toString()));
